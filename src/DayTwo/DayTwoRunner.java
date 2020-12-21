@@ -17,6 +17,7 @@ public class DayTwoRunner {
         }
 
         partOne(passwordEntries);
+        partTwo(passwordEntries);
     }
 
     static void partOne(ArrayList<String> passwordEntries) {
@@ -35,5 +36,24 @@ public class DayTwoRunner {
         }
 
         System.out.println("Part One Count: " + count);
+    }
+
+    static void partTwo(ArrayList<String> passwordEntries) {
+        Integer count = 0;
+
+        for(String passwordEntry : passwordEntries) {
+            int firstPos = Integer.valueOf(passwordEntry.substring(0, passwordEntry.indexOf('-')))-1;
+            int seconPos = Integer.valueOf(passwordEntry.substring(passwordEntry.indexOf('-')+1, passwordEntry.indexOf(":")-2))-1;
+            final char character = passwordEntry.substring(passwordEntry.indexOf(":")-1, passwordEntry.indexOf(":")).charAt(0);
+            String password = passwordEntry.substring(passwordEntry.indexOf(":")+2);
+
+            if(password.charAt(firstPos) == character && password.charAt(seconPos) != character) {
+                count+=1;
+            } else if(password.charAt(firstPos) != character && password.charAt(seconPos) == character) {
+                count+=1;
+            }
+        }
+
+        System.out.println("Part Two Count: " + count);
     }
 }
