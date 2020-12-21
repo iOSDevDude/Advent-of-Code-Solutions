@@ -8,8 +8,6 @@ import java.util.Scanner;
 public class DayOneRunner {
 
     public static void main(String[] args) throws FileNotFoundException {
-
-        //Read input and transform to integers
         Scanner input = new Scanner(new File("src/Day1/expense_report.txt")).useDelimiter("\n");
         ArrayList<Integer> numbers = new ArrayList();
         while(input.hasNext()) {

@@ -8,7 +8,6 @@ import java.util.Scanner;
 public class DayTwoRunner {
 
     public static void main(String[] args) throws FileNotFoundException {
-        //Read input and transform to integers
         Scanner input = new Scanner(new File("src/Day2/passwords.txt")).useDelimiter("\n");
         ArrayList<String> passwordEntries = new ArrayList<>();
         while(input.hasNext()) {

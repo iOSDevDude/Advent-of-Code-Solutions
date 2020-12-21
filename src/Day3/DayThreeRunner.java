@@ -10,7 +10,6 @@ import java.util.Scanner;
 public class DayThreeRunner {
 
     public static void main(String[] args) throws FileNotFoundException {
-        //Read input and transform to integers
         Scanner input = new Scanner(new File("src/Day3/tree_map.txt")).useDelimiter("\n");
         ArrayList<String> treeMap = new ArrayList<>();
         while(input.hasNext()) {
