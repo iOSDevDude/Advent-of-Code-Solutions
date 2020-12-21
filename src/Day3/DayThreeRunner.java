@@ -17,15 +17,11 @@ public class DayThreeRunner {
             treeMap.add(input.next());
         }
 
-        System.out.println(treeMap.toString());
-
         partOne(3, 1,  treeMap);
         partTwo(Arrays.asList(1, 3, 5, 7, 1), Arrays.asList(1, 1, 1, 1, 2), treeMap);
     }
 
     static int partOne(int right, int down, ArrayList<String> map) {
-
-        System.out.println(right + " " + down);
         int rowLength = map.get(0).length();
         int downIndex = 0;
         int rightIndex = 0;
