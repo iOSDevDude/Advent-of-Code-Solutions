@@ -37,7 +37,6 @@ public class DayFourRunner {
         HashMap<String, String> passport = new HashMap<>();
         int index = 0;
         for(String element : passportDataList) {
-            index++;
             if(element.length() == 0) {
                 passportList.add(passport);
                 passport = new HashMap<>();
@@ -45,6 +44,7 @@ public class DayFourRunner {
                 passport.put(element.substring(0, element.indexOf(":")), element.substring(element.indexOf(":")+1));
             }
 
+            index++;
             if(index == passportDataList.size()) {
                 passportList.add(passport);
                 break;
