@@ -16,7 +16,7 @@ public class DayOneRunner {
             numbers.add(Integer.valueOf(input.next()));
         }
 
-
+        //Loop over numbers and see which sum to 2020. Print the product of them
         numbers.forEach(firstNum -> {
               numbers.forEach(secondNum -> {
                   if(firstNum+secondNum == 2020) {
