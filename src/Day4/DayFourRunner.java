@@ -38,11 +38,16 @@ public class DayFourRunner {
         int index = 0;
         for(String element : passportDataList) {
             index++;
-            if(element.length() == 0 || index == passportDataList.size()) {
+            if(element.length() == 0) {
                 passportList.add(passport);
                 passport = new HashMap<>();
             } else {
                 passport.put(element.substring(0, element.indexOf(":")), element.substring(element.indexOf(":")+1));
+            }
+
+            if(index == passportDataList.size()) {
+                passportList.add(passport);
+                break;
             }
         }
 
