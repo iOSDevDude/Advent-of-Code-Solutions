@@ -1,4 +1,4 @@
-package DayOne;
+package Day1;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,7 +10,7 @@ public class DayOneRunner {
     public static void main(String[] args) throws FileNotFoundException {
 
         //Read input and transform to integers
-        Scanner input = new Scanner(new File("src/DayOne/expense_report.txt")).useDelimiter("\n");
+        Scanner input = new Scanner(new File("src/Day1/expense_report.txt")).useDelimiter("\n");
         ArrayList<Integer> numbers = new ArrayList();
         while(input.hasNext()) {
             numbers.add(Integer.valueOf(input.next()));
