@@ -16,14 +16,31 @@ public class DayOneRunner {
             numbers.add(Integer.valueOf(input.next()));
         }
 
-        //Loop over numbers and see which sum to 2020. Print the product of them
-        numbers.forEach(firstNum -> {
-              numbers.forEach(secondNum -> {
-                  if(firstNum+secondNum == 2020) {
-                      System.out.println(firstNum*secondNum);
-                  }
-              });
-        });
+        partOne(numbers);
+        partTwo(numbers);
 
+
+    }
+
+    static void partOne(ArrayList<Integer> numbers) {
+        numbers.forEach(firstNum -> {
+            numbers.forEach(secondNum -> {
+                if(firstNum+secondNum == 2020) {
+                    System.out.println(firstNum*secondNum);
+                }
+            });
+        });
+    }
+
+    static void partTwo(ArrayList<Integer> numbers) {
+        numbers.forEach(firstNum -> {
+            numbers.forEach(secondNum -> {
+                numbers.forEach(thirdNum -> {
+                    if(firstNum+secondNum+thirdNum == 2020) {
+                        System.out.println(firstNum*secondNum*thirdNum);
+                    }
+                });
+            });
+        });
     }
 }
