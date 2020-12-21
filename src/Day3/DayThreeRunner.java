@@ -34,7 +34,7 @@ public class DayThreeRunner {
             if(rightIndex > rowLength) {
                 tempRight = tempRight % rowLength;
             }
-            if(tempRight == 31) {
+            if(tempRight == rowLength) {
                 tempRight = 0;
             }
 
