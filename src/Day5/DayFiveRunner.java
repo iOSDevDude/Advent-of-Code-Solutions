@@ -82,7 +82,7 @@ public class DayFiveRunner {
 
         for(int i=1; i<seatIds.size(); i++) {
             if(seatIds.get(i)-seatIds.get(i-1)==2) {
-                System.out.println("seat Id " + (seatIds.get(i)-1));
+                System.out.println("Part Two: " + (seatIds.get(i)-1));
             }
         }
     }
