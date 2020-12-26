@@ -2,9 +2,7 @@ package Day6;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class DaySixRunner {
 
@@ -17,6 +15,7 @@ public class DaySixRunner {
 
         System.out.println(declarations);
         partOne(declarations);
+        partTwo(declarations);
     }
 
     static void partOne(List<String> declarations) {
@@ -42,6 +41,37 @@ public class DaySixRunner {
             }
         }
 
-        System.out.print("Part One: " + overalTotal);
+        System.out.println("Part One: " + overalTotal);
+    }
+
+    static void partTwo(List<String> declarations) {
+        int overalTotal = 0;
+
+        Map<Character, Integer> groupDeclarations = new HashMap<>();
+        int groupResponseCount = 0;
+        for(int i=0; i<=declarations.size(); i++) {
+
+            if(i == declarations.size() || declarations.get(i).length() == 0) {
+                for(Character character : groupDeclarations.keySet()) {
+                    if(groupDeclarations.get(character) == groupResponseCount) {
+                        overalTotal++;
+                    }
+                }
+
+                groupResponseCount = 0;
+                groupDeclarations.clear();
+                continue;
+            }
+
+            String declaration = declarations.get(i);
+
+            groupResponseCount++;
+            for(int j=0; j<declaration.length(); j++) {
+                groupDeclarations.put(declaration.charAt(j), groupDeclarations.get(declaration.charAt(j)) != null ? groupDeclarations.get(declaration.charAt(j))+1 : 1);
+            }
+        }
+
+        System.out.println("Part Two: " + overalTotal);
+
     }
 }
