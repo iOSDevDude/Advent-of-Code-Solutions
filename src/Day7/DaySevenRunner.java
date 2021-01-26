@@ -3,13 +3,12 @@ package Day7;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class DaySevenRunner {
 
     public static void main(String[] args) throws FileNotFoundException {
         Scanner input = new Scanner(new File("src/Day7/bag_rules.txt")).useDelimiter("\n");
-        List<String> rules = new ArrayList();
+        List<String> rules = new ArrayList<>();
         while(input.hasNext()) {
             rules.add(input.next());
         }
@@ -20,6 +19,7 @@ public class DaySevenRunner {
         List<Rule> parsedRules = parseRules(rules);
 
         System.out.println("Part One: " + partOne(parsedRules));
+        System.out.println("Part Two: " + partTwo(parsedRules));
     }
 
     public static int partOne(List<Rule> rules) {
@@ -50,6 +50,20 @@ public class DaySevenRunner {
 
         containers.remove("shiny gold");
         return containers.size();
+    }
+
+    public static int partTwo(List<Rule> rules) {
+        ArrayList<ArrayList<Rule>> children = new ArrayList<>();
+
+        ArrayList<Rule> firstChildren = new ArrayList<>();
+        for(Rule rule : rules) {
+            if(rule.bagColor.equals("shiny gold")) {
+                firstChildren.add(rule);
+            }
+        }
+        children.add(firstChildren);
+
+        return children.size();
     }
 
     static ArrayList<Rule> parseRules(List<String> ruleStringList) {
