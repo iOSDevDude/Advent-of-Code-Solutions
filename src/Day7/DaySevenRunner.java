@@ -3,6 +3,7 @@ package Day7;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DaySevenRunner {
 
@@ -13,130 +14,87 @@ public class DaySevenRunner {
             rules.add(input.next());
         }
 
-        System.out.println(rules);
-        createBagTree(rules);
+
+        rules.forEach(rule -> {System.out.println(parseRule(rule)); System.out.println(rule);});
+
+        List<Rule> parsedRules = parseRules(rules);
+
+        System.out.println("Part One: " + partOne(parsedRules));
     }
 
-    static void partOne(List<String> rules) {
-        BagTree bagTree = new BagTree(new Bag(null, null, null, null, null));
-        bagTree.findBagByColor("test");
-    }
+    public static int partOne(List<Rule> rules) {
 
-    static Bag createBagTree(List<String> bagRules) {
-//        Bag bag = new Bag(null, null, null, null, null);
-        BagTree bagTree = null;
+        Set<String> containers = new HashSet<>();
 
-        for(String rule : bagRules) {
-            String color = rule.substring(0, rule.indexOf("bags")-1);
-            rule = rule.substring(rule.indexOf("bags")+13);
-
-            if(bagTree == null) {
-                bagTree = new BagTree(new Bag(color));
+        for(Rule rule : rules) {
+            if(rule.subBags.containsKey("shiny gold")) {
+                containers.add(rule.bagColor);
             }
-
-            Bag existingParent = bagTree.findBagByColor(color);
-            if(existingParent == null) {
-                existingParent = new Bag(color);
-            }
-
-
-            while(rule.contains(",")) {
-
-            }
-
-
-            System.out.println(rule);
         }
 
-
-//       return bag;
-    }
-
-    private static class BagTree {
-        private Bag root;
-
-        public BagTree(Bag bag) {
-            root = bag;
-        }
-
-        public Bag findBagByColor(String color) {
-            if(root == null) {
-                return null;
-            }
-
-            return findBagByColor(root, color);
-        }
-
-        private Bag findBagByColor(Bag bag, String color) {
-            if(bag.color.equals(color)) {
-                return bag;
-            }
-            if(bag.hasChildBag()) {
-                Bag foundBag = findBagByColor(bag.nextChildBag, color);
-                if(foundBag != null) {
-                    return foundBag;
-                }
-            }
-            if(bag.hasSiblingBag()) {
-                Bag foundbag = findBagByColor(bag.nextSiblingBag, color);
-                if(foundbag != null) {
-                    return foundbag;
+        int lastListSize = 0;
+        while(containers.size() != lastListSize) {
+            lastListSize = containers.size();
+            Set<String> tempRules = new HashSet<>();
+            for(String container : containers) {
+                for(Rule rule : rules) {
+                    if(rule.subBags.containsKey(container)) {
+                        tempRules.add(rule.bagColor);
+                    }
                 }
             }
 
-            return null;
+            containers.addAll(tempRules);
         }
+
+
+        containers.remove("shiny gold");
+        return containers.size();
     }
 
-    private static class Bag {
-        public String color;
-        public Bag nextChildBag;
-        public Integer nextChildBagCount;
-        public Bag nextSiblingBag;
-        public Integer nextSiblingBagCount;
+    static ArrayList<Rule> parseRules(List<String> ruleStringList) {
+        ArrayList<Rule> rules = new ArrayList<>();
 
-        public Bag(String color) {
-            this.color = color;
+        ruleStringList.forEach(rule -> rules.add(parseRule(rule)));
+
+        return rules;
+    }
+
+    static Rule parseRule(String ruleString) {
+        Rule rule = new Rule();
+
+        rule.bagColor = ruleString.substring(0, ruleString.indexOf("bags")-1).toLowerCase();
+        ruleString = ruleString.substring(ruleString.indexOf("contain")+"contain".length()+1);
+
+        HashMap<String, Integer> subBags = new HashMap<>();
+
+        if(ruleString.contains("no other bags")) {
+            return rule;
         }
 
-        public Bag(String color, Bag nextChildBag, Integer nextChildBagCount, Bag nextSiblingBag, Integer nextSiblingBagCount) {
-            this.color = color;
-            this.nextChildBag = nextChildBag;
-            this.nextChildBagCount = nextChildBagCount;
-            this.nextSiblingBag = nextSiblingBag;
-            this.nextSiblingBagCount = nextSiblingBagCount;
-        }
-
-        public void addChild(Bag bag) {
-            
-            Bag tempBag = this;
-            if(tempBag.hasChildBag()) {
-                tempBag = this.nextChildBag;
-                while (bag.hasSiblingBag()) {
-                    tempBag = tempBag.nextSiblingBag;
-                }
-
-                tempBag.nextSiblingBag = bag;
-            } else {
-                tempBag.nextChildBag = bag;
+        while(ruleString.contains("bag")) {
+            int numBags = Integer.parseInt(ruleString.substring(0, ruleString.indexOf(" ")));
+            String subBagColor = ruleString.substring(ruleString.indexOf(" ")+1, ruleString.indexOf("bag")-1);
+            ruleString = ruleString.substring(ruleString.indexOf("bag")+3);
+            if(ruleString.charAt(0) == ',') {
+                ruleString = ruleString.substring(2);
+            } else if (ruleString.charAt(0) == 's' && ruleString.length() > 2) {
+                ruleString = ruleString.substring(3);
             }
-        }
-        
-        public void addSibling(Bag bag) {
-            Bag tempBag = this;
-            while(tempBag.hasSiblingBag()) {
-                tempBag = tempBag.nextSiblingBag;
-            }
-
-            tempBag.nextSiblingBag = bag;
+            subBags.put(subBagColor.toLowerCase(), numBags);
         }
 
-        public boolean hasChildBag() {
-            return nextChildBag != null;
-        }
+        rule.subBags = subBags;
+        return rule;
+    }
 
-        public boolean hasSiblingBag() {
-            return nextSiblingBag != null;
+    private static class Rule {
+        String bagColor;
+
+        Map<String, Integer> subBags = new HashMap<>();
+
+        public String toString() {
+            return "Bag Color: " + bagColor + " Sub Bags " + subBags.toString();
         }
     }
 }
