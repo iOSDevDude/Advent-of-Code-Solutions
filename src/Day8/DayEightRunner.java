@@ -1,0 +1,87 @@
+package Day8;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Scanner;
+
+public class DayEightRunner {
+
+    public static void main(String[] args) throws FileNotFoundException {
+        Scanner input = new Scanner(new File("src/Day8/instructions.txt")).useDelimiter("\n");
+        List<String> instructions = new ArrayList<>();
+        while(input.hasNext()) {
+            instructions.add(input.next());
+        }
+
+        for(String instruction : instructions) {
+            System.out.println(instruction);
+        }
+
+        List<Instruction> parsedInstructions = parseInstructions(instructions);
+
+        System.out.println("Part One: " + partOne(parsedInstructions));
+    }
+
+    public static int partOne(List<Instruction> instructions) {
+        int accumulator = 0;
+
+        for(int i=0; i<instructions.size(); i++) {
+            Instruction instruction = instructions.get(i);
+
+            if(instruction.executed) {
+                return accumulator;
+            }
+
+            switch (InstructionType.valueOf(instruction.operation)) {
+                case acc:
+                    accumulator+=instruction.argument;
+                    break;
+                case jmp:
+                    i+=instruction.argument-1;
+                    break;
+                case nop:
+                    break;
+            }
+            instructions.get(i).setExecuted(true);
+            System.out.println(instructions.get(i).executed);
+        }
+
+        return accumulator;
+    }
+
+    public static List<Instruction> parseInstructions(List<String> rawInstructions) {
+        List<Instruction> instructions = new ArrayList<>();
+
+        for(String rawInstruction : rawInstructions) {
+            String operation = rawInstruction.substring(0, rawInstruction.indexOf(" "));
+            String argument = rawInstruction.substring(rawInstruction.indexOf(" ")+1);
+
+            instructions.add(new Instruction(operation, Integer.parseInt(argument)));
+        }
+
+        return instructions;
+    }
+
+    private enum InstructionType {
+        acc, jmp, nop
+    }
+
+    private static class Instruction {
+        String operation;
+        Integer argument;
+        Boolean executed;
+
+        Instruction(String operation, Integer argument) {
+            this.operation = operation;
+            this.argument = argument;
+            this.executed = false;
+        }
+
+        public void setExecuted(Boolean executed) {
+            this.executed = executed;
+        }
+    }
+}
