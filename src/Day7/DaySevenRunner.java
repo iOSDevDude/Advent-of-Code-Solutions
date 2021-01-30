@@ -13,10 +13,9 @@ public class DaySevenRunner {
             rules.add(input.next());
         }
 
-
-        rules.forEach(rule -> {System.out.println(parseRule(rule)); System.out.println(rule);});
-
         List<Rule> parsedRules = parseRules(rules);
+
+        System.out.println("Num Rules: " + parsedRules.size());
 
         System.out.println("Part One: " + partOne(parsedRules));
         System.out.println("Part Two: " + partTwo(parsedRules));
@@ -53,17 +52,42 @@ public class DaySevenRunner {
     }
 
     public static int partTwo(List<Rule> rules) {
-        ArrayList<ArrayList<Rule>> children = new ArrayList<>();
+        List<Map<String, Integer>> children = new ArrayList<>();
 
-        ArrayList<Rule> firstChildren = new ArrayList<>();
-        for(Rule rule : rules) {
-            if(rule.bagColor.equals("shiny gold")) {
-                firstChildren.add(rule);
+        Rule shinyGoldRule = rules.stream().filter(rule -> rule.bagColor.equals("shiny gold")).findFirst().get();
+        children.add(shinyGoldRule.subBags);
+
+        while(true) {
+            HashMap subBagCounts = new HashMap();
+            children.get(children.size()-1).forEach((color, multiplier) -> {
+                for (Rule rule : rules) {
+                    if (rule.bagColor.equals(color)) {
+                        rule.subBags.forEach((subColor, subCount) -> {
+                            if(!subBagCounts.containsKey(subColor)) {
+                                subBagCounts.put(subColor, multiplier * subCount);
+                            } else {
+                                subBagCounts.put(subColor, (int)subBagCounts.get(subColor) + (multiplier*subCount));
+                            }
+                        });
+                    }
+                }
+            });
+
+            if(subBagCounts.isEmpty()) {
+                break;
+            } else {
+                children.add(subBagCounts);
             }
         }
-        children.add(firstChildren);
 
-        return children.size();
+        int count = 0;
+        for(Map<String, Integer> map : children) {
+            for(Map.Entry<String, Integer> entry : map.entrySet()) {
+                count+=entry.getValue();
+            }
+        }
+
+        return count;
     }
 
     static ArrayList<Rule> parseRules(List<String> ruleStringList) {
