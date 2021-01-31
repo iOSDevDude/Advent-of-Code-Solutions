@@ -17,6 +17,8 @@ public class DayEightRunner {
         return runInstructions(instructions).accumulator;
     }
 
+
+    //Inefficient but functional
     public static int partTwo(List<Instruction> instructions) throws FileNotFoundException{
 
         List<Instruction> instructionsCopy = new ArrayList<>(instructions);
